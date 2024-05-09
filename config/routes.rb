@@ -23,9 +23,10 @@ Rails.application.routes.draw do
         post 'dislike'
         get 'download'
       end
-    post 'approve_article', to: 'articles#publish_article'
-    resources :comments, only:[:create, :destroy, :index, :new]
+      post 'approve_article', to: 'articles#publish_article'
+      resources :comments, only:[:create, :destroy, :index, :new]
     end
+    get '', to: 'articles#index'
     get 'review_articles', to: 'articles#review_article', as: 'review_articles'
     resources :client_users, only: [:new, :create, :index, :destroy]
     resources :article_assignments, only:[:create]
