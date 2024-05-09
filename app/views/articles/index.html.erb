@@ -1,3 +1,13 @@
+<%
+=begin%>
+ <% user_not_preesent(current_user) do %>
+  <div class="top-right-button">
+    <%= button_to "Sign In", new_user_session_path(client_id: @articles.first.client.sub_domain), class: "btn btn-primary" %>
+  </div>
+<% end %> 
+<%
+=end%>
+
 <div class="container">
   <%= search_form_for @q do |form| %>
     <%= form.label :title_cont %>
@@ -12,7 +22,7 @@
     <%
 =begin%>
  <%= form.label :client_users_name_cont %>
-    <%= form.search_field :client_users_name_cont, placeholder: "Search by Author name" %> 
+    <%= form.search_field :client_users_name_cont, placeholder: "Search by Author name" %>  
 <%
 =end%>
 
@@ -23,7 +33,32 @@
 
 <% @articles.each do |article| %>
   <%= render article %>
-  <p>
-    <%= link_to "Show Article", article_path(client_id: article.client.sub_domain, id: article.id), class: "btn btn-primary" %>
-  </p>
 <% end %>
+
+<style>
+.top-right-button {
+  position: fixed;
+  top: 10px; /* Adjust as needed */
+  right: 10px; /* Adjust as needed */
+  z-index: 1000; /* Ensure it's above other content */
+}
+
+.btn {
+  /* Add any additional styling for the button here */
+}
+
+.container {
+  
+  max-width: 1200px; /* Adjust based on your design */
+  margin: 0 auto; /* Center the container */
+  padding: 20px; /* Add some padding */
+}
+
+.container.btn {
+  display: block; /* Make the submit button a block element */
+  width: 100%; /* Full width of the container */
+  margin-top: 20px; /* Add some space above the button */
+}
+
+
+</style>

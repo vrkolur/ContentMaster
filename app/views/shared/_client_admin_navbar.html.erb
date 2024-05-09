@@ -25,6 +25,9 @@
           <%= link_to "Review Articles",review_articles_path(client_id: client.sub_domain),class:"nav-link" %>
         </li>
         <li class="nav-item">
+          <%= link_to "Authors",client_users_path(client_id: client.sub_domain),class:"nav-link" %>
+        </li>
+        <li class="nav-item">
           <%= button_to "Logout", destroy_user_session_path(client_id: client.sub_domain),method: :delete,class:"btn btn-danger btn-sm " %>
         </li>
       </ul>

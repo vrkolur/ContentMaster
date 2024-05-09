@@ -3,7 +3,7 @@ class CreateLikes < ActiveRecord::Migration[7.1]
     create_table :likes do |t|
       t.boolean :status
       t.references :user, null: false, foreign_key: true
-      t.references :client, null: false, foreign_key: true
+      t.references :article, null: false, foreign_key: true
 
       t.timestamps
     end

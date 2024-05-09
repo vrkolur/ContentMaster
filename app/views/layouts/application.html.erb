@@ -25,7 +25,13 @@
       <%client = ClientUser.find_by(user:current_user).client%>
       <%= render partial: 'shared/author_navbar',locals: {client: client} %>
     <%end%>
+    <%user_reader(current_user) do %>
+      <%client = Client.find_by(sub_domain: params[:client_id])%>
+      <%= render partial: 'shared/reader_navbar',locals: {client: client} %>
+    <%end%>
   <%end%>
+  <%=render 'shared/flash_messages'%>
+
     <%= yield %>
   </body>
 </html>

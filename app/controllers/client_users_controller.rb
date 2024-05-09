@@ -1,22 +1,34 @@
 class ClientUsersController < ApplicationController
     before_action :authenticate_user!
     before_action :set_client
+    before_action :set_client_user
     before_action :check_admin?
 
     def new 
-        @client_user = ClientUser.new 
+        @user = ClientUser.new 
     end
     
     def create
         @user = User.create(client_user_params)
-        @client_user = @client.client_users.create(user: @user)
-        byebug
-        if  @client_user.save
+        if  @user.save
+            @client_user = @client.client_users.create(user: @user)
             redirect_to clients_path
-            flash[:notice]= 'Client Admin Created'
+            flash[:notice]= 'Client User Created'
         else 
             render :new, status: :unprocessable_entity 
         end
+    end
+
+    def index 
+        @authors = Services::AuthorsService.new(client: @client).authors_list 
+        @authors
+    end
+
+    def destroy 
+        @client_user.destroy
+    end
+
+    def download 
     end
 
     private 
@@ -29,6 +41,10 @@ class ClientUsersController < ApplicationController
         unless current_user.role.title=='Admin' || current_user.role.title=='ClientAdmin'
             redirect_to root_path
         end
+    end
+
+    def set_client_user 
+        @client_user = ClientUser.find_by(id: params[:id])
     end
 
     def client_user_params 

@@ -1,16 +1,20 @@
 
-<% if current_user.likes.find_by(article: article) %>
-    <%if (current_user.likes.find_by(article: article)).status %>
-        <%txt_like = 'Liked 👍'%>
-        <%txt_dislike = 'Dislike'%>
-    <%else%>
-        <%txt_like = 'Like'%>
-        <%txt_dislike = 'Disliked 👎'%>
-    <%end%>
-<%else%>
-        <%txt_like = 'Like'%>
-        <%txt_dislike = 'Dislike'%>
+
+<%if current_user%>
+  <% if current_user.likes.find_by(article: article) %>
+      <%if (current_user.likes.find_by(article: article)).status %>
+          <%txt_like = 'Liked 👍'%>
+          <%txt_dislike = 'Dislike'%>
+      <%else%>
+          <%txt_like = 'Like'%>
+          <%txt_dislike = 'Disliked 👎'%>
+      <%end%>
+  <%else%>
+          <%txt_like = 'Like'%>
+          <%txt_dislike = 'Dislike'%>
+  <%end%> 
 <%end%>
+
 
 <div class="card" data-client-name="<%= article.client.sub_domain %>" data-article-id="<%=article.id%>">
   <div class="card-header d-flex justify-content-between align-items-center">
@@ -33,11 +37,13 @@
   </div>
   <%article_published(article) do%>
     <div class="card-footer">
-      <small class="text-muted">Created at <%= article.created_at.strftime("%B %d, %Y") %>, By: <%= article.authorable.user.name%></small>
-      <button type="button" class="btn btn-sm like-button" data-article-id="<%= article.id %>" id="likeButton"><%= txt_like %></button>
-      <button type="button" class="btn btn-sm dislike-button" data-article-id="<%= article.id %>" id="dislikeButton"><%= txt_dislike %></button>
-      <%current_user_role_admin(current_user) do%>
-        <%= link_to "Edit", edit_article_path(client_id: article.client.sub_domain, id: article.id),class:"btn btn-danger btn-sm"%>
+      <small class="text-muted">Created at <%= article.created_at.strftime("%B %d, %Y") %>, By: <%= article.client_user.user.name%></small>
+      <%user_present(current_user) do%>
+        <button type="button" class="btn btn-sm like-button" data-article-id="<%= article.id %>" data-client-name="<%=article.client.sub_domain%>" id="likeButton"><%= txt_like %></button>
+        <button type="button" class="btn btn-sm dislike-button" data-article-id="<%= article.id %>" id="dislikeButton"><%= txt_dislike %></button>
+        <%current_user_role_admin(current_user) do%>
+          <%= link_to "Edit", edit_article_path(client_id: article.client.sub_domain, id: article.id),class:"btn btn-danger btn-sm"%>
+        <%end%>
       <%end%>
       <%= link_to "Show Article", article_path(client_id: article.client.sub_domain, id: article.id), class: "btn btn-primary", style: "float: right;" %>
     <%end%>
@@ -59,7 +65,7 @@
       var articleId = $(this).data('article-id');
       var userId = $(this).data('user-id');
       var txtValue = $(e.target).html();
-      var clientId = $(this).data('client-name');
+      var clientId = $(e.targte).data('client-name');
       var dislike_value = $(e.target).siblings('button').html();
       $.ajax({
         type: 'POST',

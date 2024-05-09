@@ -1,19 +1,20 @@
 class ArticlesController < ApplicationController
-    before_action :authenticate_user!
+    before_action :authenticate_user!, only: [:new, :create, :edit, :update, :like, :dislike, :review_article, :publish_article, :download]
     before_action :set_client
     before_action :check_active 
+    before_action :check_admin, only: [:new, :create, :edit, :update, :review_article, :publish_article]
     before_action :set_article, only: [:new, :index, :show, :create, :edit, :update, :download]
     skip_before_action :verify_authenticity_token, only: [:like, :dislike, :publish_article]
 
     def new 
         @tags = Tag.all
-        # byebug
         @article = Article.new
     end
 
     def index 
         @q = @client.articles.where(status: true).ransack(params[:q])
         @articles = @q.result(distinct: true)
+        # byebug
     end
 
     def show
@@ -21,9 +22,7 @@ class ArticlesController < ApplicationController
     end
 
     def create 
-        # byebug
         @article = @client.articles.create(article_params)
-        byebug
         if @article.save 
             redirect_to articles_path
         else
@@ -37,7 +36,6 @@ class ArticlesController < ApplicationController
     
     def update 
         @article.update(article_params)
-        # byebug
         if @article.save
             redirect_to articles_path(client_id: @client.sub_domain)
         else 
@@ -46,52 +44,23 @@ class ArticlesController < ApplicationController
     end
 
     def like 
-        @like = current_user.likes.find_by(article_id: @article.id)
-        if @like 
-            if @like.status
-                @like.destroy
-            else 
-                @like.update(status: true)
-            end
-        else 
-            @like = current_user.likes.create(article: @article,status: true) 
-        end
+        @like = Services::LikesService.new(user: current_user,article: @article).like
     end
     
     def dislike 
-        @like = current_user.likes.find_by(article_id: @article.id)
-        if @like 
-            if @like.status 
-                @like.update(status: false)
-            else 
-                @like.destroy
-            end
-        else 
-            @like = current_user.likes.create(article: @article,status: false)
-        end
+        @like = Services::LikesService.new(user: current_user,article: @article).dislike
     end
 
     def review_article 
-        @articles = Article.all.where(status: false)
-        # byebug
+        @articles = @client.articles.where(status: false)
     end
 
     def publish_article 
-        # byebug
         @article.update(status: true)
     end
 
     def download
-        article_pdf = Prawn::Document.new
-        article_pdf.text  @article.title
-        image_attachment = @article.image
-        if image_attachment.image?
-            image_data = image_attachment.download
-            article_pdf.move_down 10
-            article_pdf.image StringIO.new(image_data), fit: [200, 200], position: :center
-        end
-        article_pdf.text @article.category.title
-        article_pdf.text @article.body
+        article_pdf = Services::ArticleDownloadService.new(article: @article).download
         if params[:preview].present?
             send_data(article_pdf.render, filename: "#{@article.title}.pdf", type: "application/pdf", disposition: 'inline')
         else
@@ -103,15 +72,22 @@ class ArticlesController < ApplicationController
 
     def set_client
         @client = Client.find_by(sub_domain: params[:client_id])
-        # byebug
         unless @client 
             @article = Article.find_by(id: params[:id])
             @client = Client.find_by(id: @article.client.id)
         end
     end
 
+    def check_admin 
+        client_user = ClientUser.find_by(user: current_user)
+        unless client_user.client == @client 
+            redirect_to articles_path(client_id: client_user.client.sub_domain)
+        end
+
+    end
+
     def article_params
-        params.require(:article).permit(:title, :heading, :body, :category_id, :image,  tag_ids: []).merge(client_user_id: current_user.id)
+        params.require(:article).permit(:title, :heading, :body, :category_id, :image,  tag_ids: []).merge(client_user_id: ClientUser.find_by(user: current_user).id)
     end
 
     def set_article 
