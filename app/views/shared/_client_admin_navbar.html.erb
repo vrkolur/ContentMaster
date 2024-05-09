@@ -1,0 +1,75 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+ <div class="container-fluid">
+    <%= link_to "Home", articles_path(client_id: client.sub_domain) ,class:"navbar-brand"%>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+            <%= link_to "Create Client User", new_client_user_path(client_id: client.sub_domain),class:"nav-link" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "New Article",new_article_path(client_id: client.sub_domain),class:"nav-link" %>
+        </li>
+        <li class="nav-item">
+        <button id="edit-sub-domain-button" class="btn btn-s nav-link" data-client-id="<%=client.id%>" data-client-id="<%=client.name%>">Edit Sub Domain</button>
+      </li>
+        <li class="nav-item">
+          <div id="edit-sub-domain-modal" style="display: none;">
+            <input type="text" id="sub-domain-input" placeholder="Enter new sub-domain">
+            <button id="save-sub-domain">Save</button>
+          </div>
+        </li>
+        <li class="nav-item">
+          <%= link_to "Review Articles",review_articles_path(client_id: client.sub_domain),class:"nav-link" %>
+        </li>
+        <li class="nav-item">
+          <%= button_to "Logout", destroy_user_session_path(client_id: client.sub_domain),method: :delete,class:"btn btn-danger btn-sm " %>
+        </li>
+      </ul>
+    </div>
+ </div>
+</nav>
+
+
+<script> 
+  $(document).ready(function () {
+    const clientId = $(this).data('client-id');
+    // console.log(clientId);
+    $('#edit-sub-domain-button').click(function (e) { 
+      e.preventDefault;
+      $.ajax({
+        url: $(this).attr('href'),
+    method: 'GET',
+    dataType: 'script',
+    success: function(data) {
+      $('#edit-sub-domain-modal').show();
+    }
+  });
+    });
+  });
+
+  // POST   /clients/:id/update_sub_domain
+
+  $(document).ready(function () {
+    const clientId = $(this).data('client-id');
+    // console.log(clientId);
+    $('#save-sub-domain').click(function (e) { 
+      e.preventDefault();
+      var newSubDomain = $('#sub-domain-input').val();
+      // console.log(newSubDomain);
+    $.ajax({
+      url:`/clients/${<%=client.id%>}/update_sub_domain`,
+      method: 'POST',
+      data: {sub_domain: newSubDomain},
+      success: function(data) {
+        $('#client-sub-domain').html(newSubDomain) 
+        $('#edit-sub-domain-modal').hide();
+      }
+    });
+    });
+  });
+
+
+</script>

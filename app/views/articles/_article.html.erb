@@ -1,0 +1,122 @@
+
+<% if current_user.likes.find_by(article: article) %>
+    <%if (current_user.likes.find_by(article: article)).status %>
+        <%txt_like = 'Liked 👍'%>
+        <%txt_dislike = 'Dislike'%>
+    <%else%>
+        <%txt_like = 'Like'%>
+        <%txt_dislike = 'Disliked 👎'%>
+    <%end%>
+<%else%>
+        <%txt_like = 'Like'%>
+        <%txt_dislike = 'Dislike'%>
+<%end%>
+
+<div class="card" data-client-name="<%= article.client.sub_domain %>" data-article-id="<%=article.id%>">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h1><%= article.title %></h1>
+    <span class="badge bg-secondary"><%= article.category.title %></span>
+  </div>
+  <div class="card-body">
+    <% article_image_attached(article) do %>
+      <div class="d-flex justify-content-center">
+        <%= image_tag(article.image, style: "width: 350px; height: 200px", class: "card-img-top mb-3") %>
+      </div>
+    <% end %>
+    <p class="card-text"><%= truncate(article.body, length: 400) %></p>
+    <div class="card-tags mt-3">
+    <strong>Tags:</strong>
+      <% article.tags.each do |tag| %>
+        <span class="tag">#<%= tag.name %></span>
+      <% end %>
+    </div>
+  </div>
+  <%article_published(article) do%>
+    <div class="card-footer">
+      <small class="text-muted">Created at <%= article.created_at.strftime("%B %d, %Y") %>, By: <%= article.authorable.user.name%></small>
+      <button type="button" class="btn btn-sm like-button" data-article-id="<%= article.id %>" id="likeButton"><%= txt_like %></button>
+      <button type="button" class="btn btn-sm dislike-button" data-article-id="<%= article.id %>" id="dislikeButton"><%= txt_dislike %></button>
+      <%current_user_role_admin(current_user) do%>
+        <%= link_to "Edit", edit_article_path(client_id: article.client.sub_domain, id: article.id),class:"btn btn-danger btn-sm"%>
+      <%end%>
+      <%= link_to "Show Article", article_path(client_id: article.client.sub_domain, id: article.id), class: "btn btn-primary", style: "float: right;" %>
+    <%end%>
+    <div>
+      <%article_to_be_published(article) do%>
+        <button type="button" class="btn btn-primary btn-sm approve-button" data-article-id="<%=article.id%>">Approve</button>
+        <%= link_to "Show Article", article_path(client_id: article.client.sub_domain, id: article.id), class: "btn btn-primary btn-sm" %>
+      <%end%>
+    </div>
+  </div>
+</div>
+
+<script>
+    // /:client_id/articles/:id/like
+  $(document).ready(function() {
+    $('.like-button').click(function(e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      var articleId = $(this).data('article-id');
+      var userId = $(this).data('user-id');
+      var txtValue = $(e.target).html();
+      var clientId = $(this).data('client-name');
+      var dislike_value = $(e.target).siblings('button').html();
+      $.ajax({
+        type: 'POST',
+        url: `/${clientId}/articles/${articleId}/like`,
+        success: function(response) {
+        if(dislike_value == 'Disliked 👎'){
+          $(e.target).siblings('button').html('Dislike')
+        }
+        res_txt_value = txtValue == 'Liked 👍' ? 'Like ' : 'Liked 👍'
+        $(e.target).html(res_txt_value)
+        }
+      });
+    });
+  });
+
+    $(document).ready(function() {
+        $('.dislike-button').click(function(e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      var articleId = $(this).data('article-id');
+      var userId = $(this).data('user-id');
+      var txtValue_dislike = $(e.target).html();
+      var clientId = $(this).data('client-name');
+      var like_value = $(e.target).siblings('button').html();
+      $.ajax({
+        url: `/${clientId}/articles/${articleId}/dislike`,
+        type: 'POST',
+        success: function(response) {
+            if(like_value == 'Liked 👍'){
+              $(e.target).siblings('button').html('Like')
+            }
+            res_txt_value = txtValue_dislike == 'Disliked 👎' ? 'Dislike' : 'Disliked 👎'
+            $(e.target).html(res_txt_value)
+        }
+      });
+    });
+  });
+
+//  POST   /:client_id/articles/:article_id/approve_article
+  $(document).ready(function() {
+  $('.approve-button').on('click', function(e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    var articleId = $(this).data('article-id');
+    var clientName = $(this).data('client-name');
+    $.ajax({
+      url: `/${clientName}/articles/${articleId}/approve_article`,
+      type: 'POST',
+      data: {id: articleId},
+      success: function(response) {
+        $('div.card[data-article-id="' + articleId + '"]').remove();
+        // console.log(response);
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.error(textStatus, errorThrown);
+      }
+    });
+  });
+});
+</script>

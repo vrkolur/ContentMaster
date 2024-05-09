@@ -1,0 +1,64 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h5 class="card-title">Client Details</h5>
+    </div>
+    <div class="card-body">
+      <h1 class="card-title"><%= @client.name %></h1>
+      <p class="card-text" ><strong>Sub Domain:</strong> <span id="client-sub-domain"><%= @client.sub_domain %></span></p>
+      <%current_user_client_admin(current_user) do%>
+        <button id="edit-sub-domain-button" class="btn btn-primary" data-client-id="<%@client.id%>">Edit Sub Domain</button>
+      <%end%>
+      <div id="edit-sub-domain-modal" style="display: none;">
+        <input type="text" id="sub-domain-input" placeholder="Enter new sub-domain">
+        <button id="save-sub-domain">Save</button>
+      </div>
+      <p class="card-text"><strong>Active Status:</strong><%is_client_active(@client) do %><span class="text-success">Active</span><%end%><% is_client_inactive(@client) do %><span class="text-danger">Inactive</span><% end %></p>
+        <% client_admin_present(@client) do  %>
+        <% @client.client_admins.each do |client_admin| %>
+          <p class="card-text"><strong>Admin: </strong>  <%= client_admin.user.name %>( <%= client_admin.user.email %> )</p>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+  $(document).ready(function () {
+    $('#edit-sub-domain-button').click(function (e) { 
+      $.ajax({
+        url: $(this).attr('href'),
+    method: 'GET',
+    dataType: 'script',
+    success: function(data) {
+      $('#edit-sub-domain-modal').show();
+    }
+ });
+    });
+  });
+
+  $(document).ready(function () {
+    var subDomain = $('#client-sub-domain').html() 
+    // console.log(subDomain);
+    $('#save-sub-domain').click(function (e) { 
+      e.preventDefault();
+       var newSubDomain = $('#sub-domain-input').val();
+
+      // console.log('Hello');
+    $.ajax({
+    url:'/clients/'+ subDomain +'/update_sub_domain' ,
+    method: 'POST',
+    data: {sub_domain: newSubDomain},
+    success: function(data) {
+     $('#client-sub-domain').html(newSubDomain) 
+     $('#edit-sub-domain-modal').hide();
+    }
+ });
+    });
+  });
+
+</script>
+
+

@@ -1,0 +1,26 @@
+<div class="container">
+   <h1>Active Clients</h1>
+   <table class="table table-striped">
+      <thead>
+         <tr>
+            <th>Name</th>
+            <th>Action</th>
+         </tr>
+      </thead>
+      <tbody>
+         <% @clients.each do |client| %>
+         <%if client.is_active%>
+         <tr>
+            <td><%= client.name %></td>
+            <td>
+               <%= link_to 'Sign Up', new_user_registration_path(client_id: client.sub_domain), class: 'btn btn-primary' %>
+            </td>
+            <td>
+               <%= button_to "Logout", destroy_user_session_path(client_id: client.sub_domain),method: :delete %>  
+            </td>
+         </tr>
+         <%end%>
+         <% end %>
+      </tbody>
+   </table>
+</div>

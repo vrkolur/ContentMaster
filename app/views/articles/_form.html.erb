@@ -1,0 +1,45 @@
+<div class="container">
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h1>New Article</h1>
+    </div>
+    <div class="card-body">
+      <%= form_with(model: @article, local: true) do |form| %>
+        <%article_form_errors(@article) do %>
+          <div style="color: red">
+            <h2><%= pluralize(@article.errors.count, "error") %> prohibited this article from being saved:</h2>
+
+            <ul>
+              <% @article.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %> 
+        <%= form.label :title, "Title", class: "form-label" %>
+        <%= form.text_field :title, id: :article_title, class: "form-control mb-3" %>
+        
+        <%= form.label :category_id, "Category", class: "form-label" %>
+        <%= form.collection_select :category_id, Category.all, :id, :title, { include_blank: "Select Category" }, class: "form-control mb-3" %>
+
+        <div class="mb-3">
+          <%= form.label :image, "Image", class: "form-label" %>
+          <%= form.file_field :image, class: "form-control" %>
+        </div>
+
+        <%tags_present(@tags) do%>
+          <% @tags.each do |tag| %>
+            <%= check_box_tag 'article[tag_ids][]', tag.id, false %>
+            <%= label_tag "article_tag_#{tag.id}", tag.name %>
+          <% end %>
+          <br>
+        <% end %>
+
+        <%= form.label :body, "Body", class: "form-label" %>
+        <%= form.text_area :body, id: :article_body, class: "form-control mb-3",rows: 12 %>
+        
+        <%= form.submit "Submit", class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>

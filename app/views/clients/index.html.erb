@@ -1,0 +1,41 @@
+<div class="client-container">
+   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h1 class="modal-title fs-5" id="exampleModalLabel">New Client</h1>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <%= render "form", client: @client %>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="container" >
+      <div class="row justify-content-center">
+         <div class="col-md-8">
+            <div class="card-deck">
+               <% @clients.each do |client| %>
+               <%= render partial:"client", locals:{client: client} %>
+               <% end %>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<script> 
+   $(document).ready(function () {
+      $('#close-modal-btn').click(function () {
+         $.ajax({
+         url: "/clients",
+         method: "GET",
+         success: function (response) {
+            $('.client-container').html(response)
+         }
+         });
+      })
+   });
+</script>   
+
