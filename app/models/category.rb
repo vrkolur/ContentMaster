@@ -1,5 +1,5 @@
 class Category < ApplicationRecord
-    validates :title, presence: true
+    validates :title, presence: true, uniqueness: true
     has_many :articles, dependent: :destroy
     def self.ransackable_associations(auth_object = nil)
         ["articles"]

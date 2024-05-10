@@ -1,5 +1,5 @@
 class Tag < ApplicationRecord
-    validates :name, uniqueness: true
+    validates :name, presence: true, uniqueness: true
     has_many :article_tags
     has_many :articles, through: :article_tag
 
