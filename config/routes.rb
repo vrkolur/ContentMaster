@@ -26,7 +26,7 @@ Rails.application.routes.draw do
       post 'approve_article', to: 'articles#publish_article'
       resources :comments, only:[:create, :destroy, :index, :new]
     end
-    get '', to: 'articles#index'
+    get '', to: 'articles#index', as:"client_articles"
     get 'review_articles', to: 'articles#review_article', as: 'review_articles'
     resources :client_users, only: [:new, :create, :index, :destroy]
     resources :article_assignments, only:[:create]
