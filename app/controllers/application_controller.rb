@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
         else 
             # byebug
             client = Client.find_by(sub_domain: params[:client_id])
-            articles_path(client_id: client.sub_domain)
+            client_articles_path(client_id: client.sub_domain)
         end
     end
 end

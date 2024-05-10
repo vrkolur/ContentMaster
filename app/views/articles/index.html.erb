@@ -1,12 +1,9 @@
-<%
-=begin%>
- <% user_not_preesent(current_user) do %>
+<% user_not_preesent(current_user) do %>
   <div class="top-right-button">
-    <%= button_to "Sign In", new_user_session_path(client_id: @articles.first.client.sub_domain), class: "btn btn-primary" %>
+    <%= button_to "Sign In", new_user_session_path(client_id: @client.sub_domain), class: "btn btn-primary" %>
   </div>
 <% end %> 
-<%
-=end%>
+
 
 <div class="container">
   <%= search_form_for @q do |form| %>

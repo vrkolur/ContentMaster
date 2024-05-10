@@ -5,7 +5,7 @@ class ClientUsersController < ApplicationController
     before_action :check_admin?
 
     def new 
-        @user = ClientUser.new 
+        @client_user = ClientUser.new 
     end
     
     def create

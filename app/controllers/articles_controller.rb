@@ -1,8 +1,9 @@
 class ArticlesController < ApplicationController
-    before_action :authenticate_user!, only: [:new, :create, :edit, :update, :like, :dislike, :review_article, :publish_article, :download]
+    before_action :authenticate_user!, except: [:index, :show]
     before_action :set_client
     before_action :check_active 
-    before_action :check_admin, only: [:new, :create, :edit, :update, :review_article, :publish_article]
+    # before_action :check_admin, only: [:new, :create, :edit, :update, :review_article, :publish_article]
+    before_action :check_admin, except: [:index, :show, :like, :dislike, :download]
     before_action :set_article, only: [:new, :index, :show, :create, :edit, :update, :download]
     skip_before_action :verify_authenticity_token, only: [:like, :dislike, :publish_article]
 
@@ -14,7 +15,6 @@ class ArticlesController < ApplicationController
     def index 
         @q = @client.articles.where(status: true).ransack(params[:q])
         @articles = @q.result(distinct: true)
-        # byebug
     end
 
     def show

@@ -6,14 +6,14 @@ module ArticlesHelper
       end
     end
   
-    def current_user_role_admin(user)
-      if user.role.title == 'ClientAdmin' || user.role.title == 'Author'
+    def current_user_role_admin(user,client)
+      if (user.role.title == 'ClientAdmin' || user.role.title == 'Author') && belongs_to_same_client(user,client)
         yield
       end
     end
   
     def article_form_errors(article)
-      if article.errors.any?
+      if article&.errors.any?
         yield
       end
     end
@@ -25,13 +25,13 @@ module ArticlesHelper
     end
   
     def article_published(article)
-      if article.status 
+      if article&.status 
         yield 
       end
     end
   
     def article_to_be_published(article)
-      if !article.status 
+      if !article&.status 
         yield 
       end
     end
@@ -46,6 +46,10 @@ module ArticlesHelper
       unless user 
         yield 
       end
+    end
+
+    def belongs_to_same_client(user,client)
+      return ClientUser.find_by(user: user)&.client == client
     end
   
   end

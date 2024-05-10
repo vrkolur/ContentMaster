@@ -41,7 +41,7 @@
       <%user_present(current_user) do%>
         <button type="button" class="btn btn-sm like-button" data-article-id="<%= article.id %>" data-client-name="<%=article.client.sub_domain%>" id="likeButton"><%= txt_like %></button>
         <button type="button" class="btn btn-sm dislike-button" data-article-id="<%= article.id %>" id="dislikeButton"><%= txt_dislike %></button>
-        <%current_user_role_admin(current_user) do%>
+        <%current_user_role_admin(current_user,article.client) do%>
           <%= link_to "Edit", edit_article_path(client_id: article.client.sub_domain, id: article.id),class:"btn btn-danger btn-sm"%>
         <%end%>
       <%end%>
