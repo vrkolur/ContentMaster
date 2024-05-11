@@ -1,7 +1,7 @@
 FactoryBot.define do
     factory :client do
-        name { Faker::Company.name }
-        sub_domain {Faker::Company.name }
-        is_active {Faker::Boolean.boolean}
+        name { Faker::Name.first_name }
+        sub_domain { Faker::Name.first_name }
+        is_active {true}
     end
 end

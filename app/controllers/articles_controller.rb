@@ -2,9 +2,9 @@ class ArticlesController < ApplicationController
     before_action :authenticate_user!, except: [:index, :show]
     before_action :set_client
     before_action :check_active 
+    # before_action :check_admin, only: [:new, :create, :edit, :update, :review_article, :publish_article]
     before_action :check_admin, except: [:index, :show, :like, :dislike, :download]
-    # before_action :set_article, only: [:new, :index, :show, :create, :edit, :update, :download]
-    before_action :set_article, except: [:new, :index, :create, :review_article]
+    before_action :set_article, only: [:new, :index, :show, :create, :edit, :update, :download]
     skip_before_action :verify_authenticity_token, only: [:like, :dislike, :publish_article]
 
     def new 
@@ -24,7 +24,7 @@ class ArticlesController < ApplicationController
     def create 
         @article = @client.articles.create(article_params)
         if @article.save 
-            redirect_to articles_path
+            redirect_to client_articles_path
         else
             render :new, status: :unprocessable_entity 
         end
@@ -64,7 +64,7 @@ class ArticlesController < ApplicationController
         if params[:preview].present?
             send_data(article_pdf.render, filename: "#{@article.title}.pdf", type: "application/pdf", disposition: 'inline')
         else
-            send_data(appointment_pdf.render,  filename: "#{@article.title}.pdf", type: "application/pdf")
+            send_data(article_pdf.render,  filename: "#{@article.title}.pdf", type: "application/pdf")
         end
     end
 
