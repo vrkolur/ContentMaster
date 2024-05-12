@@ -41,6 +41,8 @@
       <%user_present(current_user) do%>
         <button type="button" class="btn btn-sm like-button" data-article-id="<%= article.id %>" data-client-name="<%=article.client.sub_domain%>" id="likeButton"><%= txt_like %></button>
         <button type="button" class="btn btn-sm dislike-button" data-article-id="<%= article.id %>" id="dislikeButton"><%= txt_dislike %></button>
+          <span class="views-label">Views</span>
+          <span class="view-count"><%= article.view_count %></span>
         <%current_user_role_admin(current_user,article.client) do%>
           <%= link_to "Edit", edit_article_path(client_id: article.client.sub_domain, id: article.id),class:"btn btn-danger btn-sm"%>
         <%end%>
@@ -49,7 +51,8 @@
     <%end%>
     <div>
       <%article_to_be_published(article) do%>
-        <button type="button" class="btn btn-primary btn-sm approve-button" data-article-id="<%=article.id%>">Approve</button>
+        <button type="button" class="btn btn-primary btn-sm approve-button" data-article-id="<%=article.id%>"  data-client-name="<%=article.client.sub_domain%>">Approve</button>
+        <button type="button" class="btn btn-danger btn-sm reject-button" data-article-id="<%=article.id%>" data-client-name="<%=article.client.sub_domain%>">Reject</button>
         <%= link_to "Show Article", article_path(client_id: article.client.sub_domain, id: article.id), class: "btn btn-primary btn-sm" %>
       <%end%>
     </div>
@@ -65,7 +68,9 @@
       var articleId = $(this).data('article-id');
       var userId = $(this).data('user-id');
       var txtValue = $(e.target).html();
-      var clientId = $(e.targte).data('client-name');
+      // var clientId = $(e.targte).data('client-name');
+      var clientId = $(this).data('client-name')
+      console.log(clientId);
       var dislike_value = $(e.target).siblings('button').html();
       $.ajax({
         type: 'POST',
@@ -112,12 +117,32 @@
     var articleId = $(this).data('article-id');
     var clientName = $(this).data('client-name');
     $.ajax({
-      url: `/${clientName}/articles/${articleId}/approve_article`,
+      url: `/${clientName}/articles/${articleId}/approve_article_new`,
       type: 'POST',
       data: {id: articleId},
       success: function(response) {
         $('div.card[data-article-id="' + articleId + '"]').remove();
         // console.log(response);
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.error(textStatus, errorThrown);
+      }
+    });
+  });
+});
+//Reject the article
+  $(document).ready(function() {
+  $('.reject-button').on('click', function(e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    var articleId = $(this).data('article-id');
+    var clientName = $(this).data('client-name');
+    $.ajax({
+      url: `/${clientName}/articles/${articleId}/reject_article`,
+      type: 'POST',
+      data: {id: articleId},
+      success: function(response) {
+        $('div.card[data-article-id="' + articleId + '"]').remove();
       },
       error: function(jqXHR, textStatus, errorThrown) {
         console.error(textStatus, errorThrown);

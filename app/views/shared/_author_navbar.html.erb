@@ -20,13 +20,30 @@
         </li>
       </ul>
     </div>
-        <div class="notifications-container" id="nitofications"> 
-    <button class="btn btn-primary btn-sm">Notifications☰</button>
-    <div class="notification-template" style="display:none;">
-        <div class="notification">
-            <p>New Notification</p>
-        </div>
-    </div>
+    <div class="notifications-container" id="assignedNotifications"> 
+      <button class="btn btn-primary btn-sm notificationButton" data-client-name="<%=client.sub_domain%>">Notifications</button>
+      <div class="notification-template" style="display:none;">
+          <p>New Notification</p>
+          <div class="notification">
+          </div>
+      </div>
     </div>
  </div>
 </nav>
+
+<script>
+$(document).ready(function () {
+  $('#assignedNotifications').click(function (e) { 
+    e.preventDefault();
+    var clientName = $('.notificationButton').data('client-name');
+    console.log(clientName);
+    $.ajax({
+      url: `/${clientName}/author_notifications`,
+      method: 'GET',
+      success: function (response) {
+        console.log(response);
+      }
+    });
+  });
+});
+</script>

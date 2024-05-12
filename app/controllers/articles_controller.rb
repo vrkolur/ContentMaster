@@ -3,9 +3,9 @@ class ArticlesController < ApplicationController
     before_action :set_client
     before_action :check_active 
     # before_action :check_admin, only: [:new, :create, :edit, :update, :review_article, :publish_article]
-    before_action :check_admin, except: [:index, :show, :like, :dislike, :download]
+    before_action :check_admin, except: [:index, :show, :download]
     before_action :set_article, only: [:new, :index, :show, :create, :edit, :update, :download]
-    skip_before_action :verify_authenticity_token, only: [:like, :dislike, :publish_article]
+    skip_before_action :verify_authenticity_token, only: [ :publish_article]
 
     def new 
         @tags = Tag.all
@@ -18,6 +18,7 @@ class ArticlesController < ApplicationController
     end
 
     def show
+        @article.update(view_count: @article.view_count+1)
         @comments = @article.comments.order(created_at: :desc)
     end
 
@@ -41,14 +42,6 @@ class ArticlesController < ApplicationController
         else 
             render :edit, status: :unprocessable_entity
         end  
-    end
-
-    def like 
-        @like = Services::LikesService.new(user: current_user,article: @article).like
-    end
-    
-    def dislike 
-        @like = Services::LikesService.new(user: current_user,article: @article).dislike
     end
 
     def review_article 
@@ -83,7 +76,6 @@ class ArticlesController < ApplicationController
         unless client_user.client == @client 
             redirect_to articles_path(client_id: client_user.client.sub_domain)
         end
-
     end
 
     def article_params
@@ -100,4 +92,3 @@ class ArticlesController < ApplicationController
         end
     end
 end
-

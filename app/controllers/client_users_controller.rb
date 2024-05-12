@@ -3,6 +3,7 @@ class ClientUsersController < ApplicationController
     before_action :set_client
     before_action :set_client_user
     before_action :check_admin?
+    skip_before_action :verify_authenticity_token, only: [:destroy]
 
     def new 
         @client_user = ClientUser.new 
@@ -21,7 +22,6 @@ class ClientUsersController < ApplicationController
 
     def index 
         @authors = Services::AuthorsService.new(client: @client).authors_list 
-        @authors
     end
 
     def destroy 

@@ -54,9 +54,6 @@
 </div>
 
 <script>
-  //         POST   /:client_id/articles/:article_id/comments(.:format)
-  // comment DELETE /:client_id/articles/:article_id/comments/:id
-  // comments GET     /:client_id/articles/:article_id/comments(.:format)
 $(document).ready(function() {
     $('.commentsButton > button').click(function(e) {
       e.preventDefault();
@@ -64,9 +61,6 @@ $(document).ready(function() {
         var cardDiv = $('.card');
         const clientId = cardDiv.data('client-name')
         const articleId = cardDiv.data('article-id')
-
-        // console.log(clientId); 
-        // console.log(articleId); 
         const url = `/${clientId}/articles/${articleId}/comments`;
         $.ajax({
             url: url,
