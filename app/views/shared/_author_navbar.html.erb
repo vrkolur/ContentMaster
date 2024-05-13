@@ -24,7 +24,7 @@
       <button class="btn btn-primary btn-sm notificationButton" data-client-name="<%=client.sub_domain%>">Notifications</button>
       <div class="notification-template" style="display:none;">
           <p>New Notification</p>
-          <div class="notification">
+          <div class="notifications">
           </div>
       </div>
     </div>
@@ -32,18 +32,28 @@
 </nav>
 
 <script>
+// /:client_id/notifications
 $(document).ready(function () {
   $('#assignedNotifications').click(function (e) { 
     e.preventDefault();
     var clientName = $('.notificationButton').data('client-name');
     console.log(clientName);
     $.ajax({
-      url: `/${clientName}/author_notifications`,
+      url: `/${clientName}/all_messages`,
       method: 'GET',
       success: function (response) {
-        console.log(response);
+        // console.log(response);
+        var notifications = $(response).find('.notification');
+        console.log(notifications);
+        var targetDiv = $('.notification-template.notifications');
+        notifications.each(function() {
+          targetDiv.append($(this));
+        });
+        $('.notification-template').css('display', 'block');
       }
     });
   });
 });
+
+
 </script>

@@ -1,3 +1,7 @@
+<%article_count_nil(@articles) do%>
+    <h1> No Articles to Review </h1>
+<%end%>
+
 <% @articles.each do |article| %>
     <%= render 'articles/article', article: article %>
 <% end %>

@@ -10,6 +10,7 @@ class ClientUsersController < ApplicationController
     end
     
     def create
+        # byebug
         @user = User.create(client_user_params)
         if  @user.save
             @client_user = @client.client_users.create(user: @user)

@@ -4,7 +4,6 @@ RSpec.describe "ClientUsers", type: :request do
 
   let(:client) {FactoryBot.create(:client)}
   let(:client_user) {FactoryBot.create(:client_user, client_id:client.id)}
-  # let(:role) {FactoryBot.create(:role,name:"")}
   let(:user) {FactoryBot.create(:user)}
 
   before(:each) do
@@ -32,13 +31,13 @@ RSpec.describe "ClientUsers", type: :request do
           password:"password"}
         }
       expect(response).to have_http_status(302)
-      # expect(ClientUser.first.user.name).to eq(cliet_user.user.name)
     end
     
     it 'should successfully delete the client_user wit success code' do 
       delete client_user_path(client_id: client.slug,id: client_user.id), params: {id: client_user.id}
       expect(response).to have_http_status(302)
-      # expect { ClientUser.find(client_user.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      byebug
+      expect { ClientUser.find(user.id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
   end
