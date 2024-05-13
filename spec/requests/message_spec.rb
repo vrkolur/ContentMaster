@@ -13,14 +13,16 @@ RSpec.describe "Messages", type: :request do
 
 
     it 'should render all the notifications for that author' do 
-      get all_messages_path(client_id: client.id)
+      get all_messages_path(client_id: client.sub_domain)
       expect(response).to have_http_status(200)
+      expect(response).to render_template('messages/_message')
     end
 
     it 'should mark the message as read ' do 
       message = FactoryBot.create(:message)
-      post message_path(client_id: client.sub_domain,id: message.id)
-      expect(response).to have_http_status(300)
+      post mark_as_read_message_path(client_id: client.sub_domain,id: message.id)
+      expect(response).to have_http_status(:success)
+      expect(Message.first.status).to be(true)
     end
   end
 end

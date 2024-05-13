@@ -1,4 +1,5 @@
 class MessagesController < ApplicationController
+    before_action :authenticate_user!
     before_action :set_client
 
     def all_messages
@@ -9,10 +10,11 @@ class MessagesController < ApplicationController
     end
 
     def mark_as_read 
-        byebug
-        @message = Message.find(params[:id])
-        @message.update(status: true)
+        @message = Message.find(params[:id]).update(status: true)
     end
 
     private 
+    def set_client
+        @client = Client.find_by(sub_domain: params[:client_id])
+    end
 end

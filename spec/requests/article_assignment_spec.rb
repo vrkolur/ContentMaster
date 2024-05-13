@@ -7,12 +7,6 @@ RSpec.describe "ArticleAssignments", type: :request do
         let(:role) {FactoryBot.create(:role, title: "ClientAdmin")}
         let(:user) {FactoryBot.create(:user,role_id: role.id)}
         
-        
-        # before(:each) do
-        #     sign_in user
-
-        # end
-        
         it 'get the assignment page with success redirect' do 
             client = FactoryBot.create(:client)
             client_user = FactoryBot.create(:client_user, user_id: user.id,client_id: client.id)

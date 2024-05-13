@@ -30,6 +30,27 @@ RSpec.describe "Articles", type: :request do
       expect(Like.first.status).to eq(true)
     end
 
+    it 'should destroy the like_record if liked again' do 
+      like = FactoryBot.create(:like,user_id:user.id, article_id: article1.id, status:true)
+      post like_article_path(client_id: client, id: article1.id)
+      expect(response).to have_http_status(:success)
+      expect(Like.find_by(user_id: user.id).nil?).to be(true)
+    end
+
+    it 'should destroy the like_record if disliked again' do 
+      like = FactoryBot.create(:like,user_id:user.id, article_id: article1.id, status:false)
+      post dislike_article_path(client_id: client, id: article1.id)
+      expect(response).to have_http_status(:success)
+      expect(Like.find_by(user_id: user.id).nil?).to be(true)
+    end
+
+    it 'should change the status when liked after dislike or liked after disliked' do 
+      like = FactoryBot.create(:like,user_id:user.id, article_id: article1.id, status:true)
+      post dislike_article_path(client_id: client, id: article1.id)
+      expect(response).to have_http_status(:success)
+      expect(Like.first.status).to be(false)
+    end
+
     it 'should dislike the article and generate a success response' do 
       post dislike_article_path(client_id: client, id: article1.id)
       expect(response).to have_http_status(:success)
@@ -39,10 +60,6 @@ RSpec.describe "Articles", type: :request do
     it 'should redirect to a pdf downloader pages withe the provides content' do 
       get download_article_path(client_id: client.sub_domain, id: article1.id)
       expect(response).to have_http_status(:success)
-    end
-
-    it 'should approve the article and  success should change the status attribute' do 
-      post article_approve_article_new_path(client_id: client.id, article_id: article1.id)
     end
 
     it 'should successfuylly created a article and redirect to clients_articles_path' do 
@@ -57,6 +74,7 @@ RSpec.describe "Articles", type: :request do
       )
         expect(response).to have_http_status(302)
         expect(response).to redirect_to(articles_path(client_id: article1.client.sub_domain))
+        expect(Article.first.title).to eq(article1.title)
     end
 
     it 'should redirect to a edit form to edit the article' do 

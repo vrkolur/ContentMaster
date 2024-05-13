@@ -117,7 +117,7 @@
     var articleId = $(this).data('article-id');
     var clientName = $(this).data('client-name');
     $.ajax({
-      url: `/${clientName}/articles/${articleId}/approve_article_new`,
+      url: `/${clientName}/articles/${articleId}/approve_article`,
       type: 'POST',
       data: {id: articleId},
       success: function(response) {

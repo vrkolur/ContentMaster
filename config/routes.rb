@@ -25,12 +25,11 @@ Rails.application.routes.draw do
         get 'download'
       end
       # Article Preview Controller
-      post 'approve_article_new', to: 'article_previews#publish_article_new'
+      post 'approve_article', to: 'article_previews#publish_article'
       post 'reject_article', to: 'article_previews#reject_article'
       #Comments Controller 
       resources :comments, only:[:create, :destroy, :index, :new]
     end
-    get 'author_notifications', to:"article_previews#all_notifications", as: "author_notifications"
     get '', to: 'articles#index', as:"client_articles"
     #Article Preview Controller
     get 'review_articles_new', to: 'article_previews#preview_articles', as:'review_articles_new'
@@ -39,7 +38,7 @@ Rails.application.routes.draw do
     # Message Controller 
     resources :messages, only: :destroy do 
       member do 
-        get 'mark_as_read', to:'messages#mark_as_read', as:'mark_as_read'
+        post 'mark_as_read', to:'messages#mark_as_read'
       end
     end
     get 'all_messages', to: 'messages#all_messages'

@@ -1,8 +1,8 @@
 class ClientUsersController < ApplicationController
     before_action :authenticate_user!
+    before_action :check_admin?
     before_action :set_client
     before_action :set_client_user
-    before_action :check_admin?
     skip_before_action :verify_authenticity_token, only: [:destroy]
 
     def new 
@@ -10,7 +10,6 @@ class ClientUsersController < ApplicationController
     end
     
     def create
-        # byebug
         @user = User.create(client_user_params)
         if  @user.save
             @client_user = @client.client_users.create(user: @user)

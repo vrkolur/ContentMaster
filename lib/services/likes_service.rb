@@ -8,7 +8,6 @@ module Services
         
         def like 
             @like = @user.likes.find_by(article_id: @article.id)
-            # byebug
             if @like 
                 if @like.status
                     @like.destroy
