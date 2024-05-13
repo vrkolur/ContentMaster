@@ -23,7 +23,6 @@
     <div class="notifications-container" id="assignedNotifications"> 
       <button class="btn btn-primary btn-sm notificationButton" data-client-name="<%=client.sub_domain%>">Notifications</button>
       <div class="notification-template" style="display:none;">
-          <p>New Notification</p>
           <div class="notifications">
           </div>
       </div>
@@ -37,19 +36,21 @@ $(document).ready(function () {
   $('#assignedNotifications').click(function (e) { 
     e.preventDefault();
     var clientName = $('.notificationButton').data('client-name');
-    console.log(clientName);
+    // console.log(clientName);
     $.ajax({
       url: `/${clientName}/all_messages`,
       method: 'GET',
       success: function (response) {
-        // console.log(response);
+        console.log(response);
         var notifications = $(response).find('.notification');
-        console.log(notifications);
-        var targetDiv = $('.notification-template.notifications');
+        // Clear the notifications div before appending new content
+        $('.notifications').empty();
+        // Append each notification to the notifications div
         notifications.each(function() {
-          targetDiv.append($(this));
+          $('.notifications').append($(this).html());
         });
-        $('.notification-template').css('display', 'block');
+        // Optionally, show the notifications div if it was hidden
+        $('.notifications').css('display', 'block');
       }
     });
   });

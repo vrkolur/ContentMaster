@@ -1,3 +1,4 @@
+<%= stylesheet_link_tag('article_index') %>
 <% user_not_preesent(current_user) do %>
   <div class="top-right-button">
     <%= button_to "Sign In", new_user_session_path(client_id: @client.sub_domain), class: "btn btn-primary" %>
