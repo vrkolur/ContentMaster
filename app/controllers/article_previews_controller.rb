@@ -14,7 +14,7 @@ class ArticlePreviewsController < ApplicationController
     end
 
     def reject_article
-        Services::RejectArticleService.new(article:@article).reject_article
+        Services::RejectArticleService.new(article:@article,current_user: current_user).reject_article
     end
 
 

@@ -16,45 +16,23 @@
           </div>
         </li>
         <li class="nav-item">
-          <%= button_to "Logout", destroy_user_session_path(client_id: client.sub_domain),method: :delete,class:"btn btn-danger btn-sm" %>
+          <%= link_to "Notifications", all_messages_path(client_id: client.sub_domain),class:"btn btn-primary btn-sm" %>
+        </li>
+        <li class="nav-item ">
+          <%= button_to "Logout", destroy_user_session_path(client_id: client.sub_domain),method: :delete,class:"btn btn-danger logout-button" %>
         </li>
       </ul>
-    </div>
-    <div class="notifications-container" id="assignedNotifications"> 
-      <button class="btn btn-primary btn-sm notificationButton" data-client-name="<%=client.sub_domain%>">Notifications</button>
-      <div class="notification-template" style="display:none;">
-          <div class="notifications">
-          </div>
-      </div>
     </div>
  </div>
 </nav>
 
-<script>
-// /:client_id/notifications
-$(document).ready(function () {
-  $('#assignedNotifications').click(function (e) { 
-    e.preventDefault();
-    var clientName = $('.notificationButton').data('client-name');
-    // console.log(clientName);
-    $.ajax({
-      url: `/${clientName}/all_messages`,
-      method: 'GET',
-      success: function (response) {
-        console.log(response);
-        var notifications = $(response).find('.notification');
-        // Clear the notifications div before appending new content
-        $('.notifications').empty();
-        // Append each notification to the notifications div
-        notifications.each(function() {
-          $('.notifications').append($(this).html());
-        });
-        // Optionally, show the notifications div if it was hidden
-        $('.notifications').css('display', 'block');
-      }
-    });
-  });
-});
 
-
-</script>
+<style>
+.logout-button {
+  position: absolute;
+  right: 3%; /* Positions the button to the right */
+  top: 50%; /* Centers the button vertically */
+  transform: translateY(-50%); /* Adjusts the button's position to be perfectly centered vertically */
+  margin: 0; /* Removes default margin */
+}
+</style>

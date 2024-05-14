@@ -12,9 +12,9 @@ RSpec.describe "ArticlePreviews", type: :request do
     it 'should redirect to the preview articles page' do 
       client_user = FactoryBot.create(:client_user, user_id: user.id,client_id: client.id)
       sign_in client_user.user
-      get review_articles_new_path(client_id: client.sub_domain)
+      get review_articles_path(client_id: client.sub_domain)
       expect(response).to have_http_status(:success)
-      expect(response.request.url).to eq("http://www.example.com/#{client.sub_domain}/review_articles_new")
+      expect(response.request.url).to eq("http://www.example.com/#{client.sub_domain}/review_articles")
     end
     
     it 'should publish the article by setting the status true' do 

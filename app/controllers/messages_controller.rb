@@ -1,15 +1,15 @@
 class MessagesController < ApplicationController
     before_action :authenticate_user!
     before_action :set_client
+    skip_before_action :verify_authenticity_token, only: :mark_as_read
+
 
     def all_messages
-        @messages = Message.where(reciever_id: current_user.id,status: false)
-        if @messages
-            render partial: 'messages/message', locals: { messages: @messages }
-        end
+        @messages = Message.where(reciever_id: current_user.id, status: false)
     end
 
     def mark_as_read 
+        # byebug
         @message = Message.find(params[:id]).update(status: true)
     end
 

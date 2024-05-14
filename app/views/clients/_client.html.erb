@@ -1,18 +1,20 @@
 <div class="card mb-4" id="client-card-<%= client.id %>">
   <div class="card-body">
-      <h5 class="card-title"><%= client.name %></h5>
+      <h5 class="card-title text-center"><%= client.name %></h5>
+
       <%client_image_attached(client) do%>
-        <%= image_tag(client.background_image, style: "width: 150px; height: 100px", class: "card-img-top mb-3") %>
+        <%= image_tag(client.background_image, style: "width: 150px; height: 100px", class: "d-flex card-img-top mb-3") %>
       <% end %>
       <p class="card-text"><strong>Sub Domain:</strong> <%= client.sub_domain %></p>
-      <p class="card-text is-active" data-client-id="<%= client.id %>"> <strong>Active:</strong> <span data-client-id="<%= client.id %>" class="btn btn-sm btn-primary"><%= client.is_active ? 'Yes': 'No' %></span></p>
+      <p class="card-text is-active" data-client-id="<%= client.id %>"> <strong>Active:</strong> <span data-client-id="<%= client.id %>" class="btn btn-sm btn-primary" id="client_active_status"><%= client.is_active ? 'Yes': 'No' %></span></p>
       <div id="edit-form-container-<%= client.id %>"></div>
       <%client_admin_empty(client) do%>
         <%= link_to "New Client Admin", new_client_user_path(client_id: client.sub_domain), class: "btn btn-primary btn-sm" %>
       <% end %>
-      <%= link_to "Edit", edit_client_path(client.id), class: "btn btn-primary btn-sm" %>
-      <div id="delete-form-container-<%= client.id %>"></div>
-      <button class="btn btn-danger btn-sm delete-client-bt mt-3" data-client-id="<%= client.id %>">Delete</button>
+      <div class="row d-flex align-items-end  justify-content-between">
+      <%= link_to "Edit", edit_client_path(client.id), class: "btn btn-primary btn-sm col-5 mr-1  h-100" %>
+      <button class="btn btn-danger mt-0 btn-sm delete-client-bt mt-3  ml-1 col-5 h-100" data-client-id="<%= client.id %>">Delete</button>
+      </div>
   </div>
 </div>
 

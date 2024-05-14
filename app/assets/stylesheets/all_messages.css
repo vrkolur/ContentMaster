@@ -1,0 +1,23 @@
+.no-messages {
+    font-weight: bold;
+    text-align: center;
+}
+
+#messagesContainer{
+    margin-top: 40px;
+}
+
+body {
+    background-color: #d4d4fb;
+}
+
+.card {
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.message-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}

@@ -1,0 +1,17 @@
+<%= javascript_include_tag ('ajax_files/all_messages') %>
+<%= stylesheet_link_tag('all_messages') %>
+<div id="messagesContainer">
+  <% message_count_nil(@messages) do %>
+    <p class="no-messages">There are no messages to display.</p>
+  <% end %>
+    <% @messages.each do |message| %>
+      <div class="card mb-3">
+        <div class="card-body">
+          <p class="card-text"><%= message.msg %></p>
+        </div>
+        <div class="message-actions">
+          <button type="button" class="btn btn-primary" data-client-name="<%=@client.name%>" data-message-id="<%=message.id%>">Mark as Read</button>
+        </div>
+      </div>
+    <% end %>
+</div>

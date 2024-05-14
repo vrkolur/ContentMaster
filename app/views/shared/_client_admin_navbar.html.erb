@@ -1,3 +1,5 @@
+<%= javascript_include_tag("ajax_files/client_admin_navbar") %>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
  <div class="container-fluid">
     <%= link_to "Home", client_articles_path(client_id: client.sub_domain) ,class:"navbar-brand"%>
@@ -38,27 +40,8 @@
  </div>
 </nav>
 
-
-<script> 
-  $(document).ready(function () {
-    const clientId = $(this).data('client-id');
-    // console.log(clientId);
-    $('#edit-sub-domain-button').click(function (e) { 
-      e.preventDefault;
-      $.ajax({
-        url: $(this).attr('href'),
-    method: 'GET',
-    dataType: 'script',
-    success: function(data) {
-      $('#edit-sub-domain-modal').show();
-    }
-  });
-    });
-  });
-
-  // POST   /clients/:id/update_sub_domain
-
-  $(document).ready(function () {
+<script>
+$(document).ready(function () {
     const clientId = $(this).data('client-id');
     // console.log(clientId);
     $('#save-sub-domain').click(function (e) { 
@@ -75,6 +58,5 @@
       }
     });
     });
-  });
-
+  })
 </script>
