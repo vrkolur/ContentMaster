@@ -1,0 +1,17 @@
+.comment-info {
+    font-size: 0.8rem;
+    color: rgba(255, 0, 0, 0.5);
+}
+
+.comment-info.email {
+    margin-right: 10px;
+}
+
+.card {
+    background-color: #ffffff;
+    margin-top: 10px;
+}
+
+body {
+    background-color: #d4d4fb;
+}

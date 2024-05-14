@@ -1,0 +1,36 @@
+.article-container {
+    margin: 10px 0;
+}
+
+.article-title {
+    text-align: center;
+}
+
+.article-card {
+    margin: 0 20px;
+}
+
+.card-img-top {
+    margin-bottom: 20px;
+}
+
+.card-tags {
+    margin-top: 20px;
+}
+
+.card {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
+
+.title-container {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

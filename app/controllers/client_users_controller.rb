@@ -13,9 +13,10 @@ class ClientUsersController < ApplicationController
         @user = User.create(client_user_params)
         if  @user.save
             @client_user = @client.client_users.create(user: @user)
-            redirect_to clients_path
+            redirect_to client_articles_path(client_id: @client.sub_domain)
             flash[:notice]= 'Client User Created'
         else 
+            flash[:alert] = "Error Password does not match or Email Taken"
             render :new, status: :unprocessable_entity 
         end
     end
