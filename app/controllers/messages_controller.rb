@@ -9,7 +9,6 @@ class MessagesController < ApplicationController
     end
 
     def mark_as_read 
-        # byebug
         @message = Message.find(params[:id]).update(status: true)
     end
 

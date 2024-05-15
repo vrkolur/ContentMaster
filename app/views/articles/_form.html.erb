@@ -38,7 +38,7 @@
         <% end %>
 
         <%= form.label :body, "Body", class: "form-label" %>
-        <%= form.text_area :body, id: :article_body, class: "form-control mb-3",rows: 12 %>
+        <%= form.rich_text_area :body, id: :article_body, class: "form-control mb-3",rows: 12 %>
         
         <%= form.submit "Submit", class: "btn btn-primary" %>
       <% end %>

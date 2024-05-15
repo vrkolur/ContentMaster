@@ -14,7 +14,6 @@ class CommentsController < ApplicationController
 
     def create 
         @comment = @article.comments.create(comments_params)
-        # byebug
         if @comment.save 
             flash[:notice]='Comment Created'
         else
@@ -24,7 +23,6 @@ class CommentsController < ApplicationController
 
     def delete 
         @comment = Comment.find(params[:id])
-        # byebug
         @comment.destroy 
     end
 
@@ -38,7 +36,6 @@ class CommentsController < ApplicationController
     end
 
     def set_article 
-        # byebug
         @article = Article.find(params[:article_id])
     end
 end

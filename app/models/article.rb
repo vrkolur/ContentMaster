@@ -2,7 +2,8 @@ class Article < ApplicationRecord
 
   #validations
   validates :title, presence: true
-  validates :body, presence: true
+  
+  has_rich_text :body
 
   # association 
   belongs_to :client

@@ -2,7 +2,6 @@ class ClientsController < ApplicationController
     before_action :authenticate_user!
     before_action :set_client
     before_action :check_admin , only: %i[ show create index edit update destroy change_client_active_status ]
-    # before_action :check_client_admin , only: %i[ show edit_sub_domain update_sub_domain ]
     skip_before_action :verify_authenticity_token, only: [:change_client_active_status,:destroy,:update_sub_domain]
 
     

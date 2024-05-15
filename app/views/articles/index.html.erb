@@ -17,13 +17,6 @@
     <%= form.label :tags_name_cont %>
     <%= form.text_field :tags_name_cont, placeholder: "Search by tag name" %>
 
-    <%
-=begin%>
- <%= form.label :client_users_name_cont %>
-    <%= form.search_field :client_users_name_cont, placeholder: "Search by Author name" %>  
-<%
-=end%>
-
     <%= form.submit "Search", class: "btn btn-primary" %>
   <% end %>
 </div>
@@ -34,29 +27,5 @@
 <% end %>
 
 <style>
-.top-right-button {
-  position: fixed;
-  top: 10px; /* Adjust as needed */
-  right: 10px; /* Adjust as needed */
-  z-index: 1000; /* Ensure it's above other content */
-}
-
-.btn {
-  /* Add any additional styling for the button here */
-}
-
-.container {
-  
-  max-width: 1200px; /* Adjust based on your design */
-  margin: 0 auto; /* Center the container */
-  padding: 20px; /* Add some padding */
-}
-
-.container.btn {
-  display: block; /* Make the submit button a block element */
-  width: 100%; /* Full width of the container */
-  margin-top: 20px; /* Add some space above the button */
-}
-
 
 </style>

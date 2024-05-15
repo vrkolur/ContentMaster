@@ -14,7 +14,7 @@ module Services
                 article_pdf.image StringIO.new(image_data), fit: [200, 200], position: :center
             end
             article_pdf.text @article.category.title
-            article_pdf.text @article.body
+            article_pdf.text @article.body.to_plain_text
             
             article_pdf
         end

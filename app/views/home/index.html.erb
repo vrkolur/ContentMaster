@@ -13,10 +13,7 @@
          <tr>
             <td><%= client.name %></td>
             <td>
-               <%= link_to 'Sign Up', new_user_registration_path(client_id: client.sub_domain), class: 'btn btn-primary' %>
-            </td>
-            <td>
-               <%= button_to "Logout", destroy_user_session_path(client_id: client.sub_domain),method: :delete %>  
+               <%= link_to 'Sign In', new_user_session_path(client_id: client.sub_domain), class: 'btn btn-primary' %>
             </td>
          </tr>
          <%end%>

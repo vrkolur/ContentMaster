@@ -1,4 +1,5 @@
 <%= stylesheet_link_tag('assign_articles') %>
+<%= javascript_include_tag('ajax_files/client_user_index') %>
 <div class="container">
   <table class="table table-striped">
     <thead>
@@ -25,24 +26,4 @@
   </table>
 </div>
 
-<script>
-$(document).ready(function() {
-  $('.btn-danger').on('click', function(e) {
-    e.preventDefault(); // Prevent the default form submission
-
-    var clientName = $(this).data('client-name'); 
-    var authorId = $(this).data('author-id'); 
-      $.ajax({
-        url: `/${clientName}/client_users/${authorId}`, 
-        type: 'DELETE',
-        success: function() {
-          $('tr[data-author-id="' + authorId + '"]').remove();
-        },
-        error: function() {
-          alert('An error occurred. Please try again.');
-        }
-      });
-  });
-});
-</script>
 

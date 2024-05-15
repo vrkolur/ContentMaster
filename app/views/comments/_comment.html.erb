@@ -1,13 +1,21 @@
-<div id="commentsContainer" >
-    <div class="comment">
-      <div class="comment-footer">
-        <p><strong>By:</strong> <%= comment.user.email %></p>
-      </div>
-      <div class="comment-body">
-        <p><strong>Comment:</strong> <%= comment.body %></p>
-      </div>
-      <div class="comment-footer">
-        <p><strong>Posted at:</strong> <%= l(comment.created_at, format: :short) %></p>
+<div id="commentsContainer" class="container">
+  <div class="comment mb-3">
+    <div class="card">
+      <div class="card-body">
+        <div class="comment-body p-2">
+          <p><strong>Comment:</strong> <%= comment.body %></p>
+        </div>
+        <div class="comment-footer bg-light p-2 rounded-bottom">
+          <div class="row">
+            <div class="col">
+              <p><strong>By:</strong> <%= comment.user.email %></p>
+            </div>
+            <div class="col">
+              <p><strong>Posted at:</strong> <%= l(comment.created_at, format: :short) %></p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
 </div>
