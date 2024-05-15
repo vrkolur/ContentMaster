@@ -11,7 +11,7 @@
       <%client_admin_empty(client) do%>
         <%= link_to "New Client Admin", new_client_user_path(client_id: client.sub_domain), class: "btn btn-primary btn-sm" %>
       <% end %>
-      <%= link_to "Edit", edit_client_path(client.id), class: "btn btn-primary btn-sm" %>
+      <%= link_to "Edit", edit_client_path(client.id), class: "btn btn-primary btn-sm, edit-client"%>
       <div id="delete-form-container-<%= client.id %>"></div>
       <button class="btn btn-danger btn-sm delete-client-bt mt-3" data-client-id="<%= client.id %>">Delete</button>
   </div>

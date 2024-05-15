@@ -10,7 +10,7 @@
             <%= link_to "Create Client User", new_client_user_path(client_id: client.sub_domain),class:"nav-link" %>
         </li>
         <li class="nav-item">
-          <%= link_to "New Article",new_article_path(client_id: client.sub_domain),class:"nav-link" %>
+          <%= link_to "New Article",new_article_path(client_id: client.sub_domain),class:"nav-link new-article-link" %>
         </li>
         <li class="nav-item">
         <button id="edit-sub-domain-button" class="btn btn-s nav-link" data-client-id="<%=client.id%>" data-client-id="<%=client.name%>">Edit Sub Domain</button>
