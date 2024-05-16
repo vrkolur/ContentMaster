@@ -27,5 +27,7 @@ class Article < ApplicationRecord
     ["article_tags", "category", "tags"]
   end
 
+  self.per_page = 5
+
 
 end

@@ -40,7 +40,20 @@ RSpec.describe "ArticlePreviews", type: :request do
       post "/#{"FakeClient"}/articles/#{article.id}/reject_article"
       expect(response).to have_http_status(302)
     end
+  end
 
+  describe 'redirect_to' do 
 
+    let(:user) {FactoryBot.create(:user)}
+
+    it 'redirect to their client page of not the same client' do 
+      client = FactoryBot.create(:client)
+      client1 = FactoryBot.create(:client)
+      article = FactoryBot.create(:article)
+      client_user = FactoryBot.create(:client_user,user_id: user.id, client_id: client1.id)
+      sign_in user
+      get  review_articles_path(client_id: client.sub_domain)
+      expect(response).to redirect_to("http://www.example.com/#{client1.sub_domain}/articles")
+    end
   end
 end

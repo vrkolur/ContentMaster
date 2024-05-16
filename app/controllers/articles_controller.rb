@@ -13,7 +13,7 @@ class ArticlesController < ApplicationController
 
     def index 
         @q = @client.articles.where(status: true).ransack(params[:q])
-        @articles = @q.result(distinct: true)
+        @articles = @q.result(distinct: true).paginate(:page => params[:page], :per_page => 5)
     end
 
     def show
@@ -22,7 +22,7 @@ class ArticlesController < ApplicationController
     end
 
     def create 
-        @article = @client.articles.create(article_params)
+        @article = @client.articles.create(article_params.merge(client_user_id: ClientUser.find_by(user: current_user).id))
         if @article.save 
             redirect_to client_articles_path
         else
@@ -78,7 +78,7 @@ class ArticlesController < ApplicationController
     end
 
     def article_params
-        params.require(:article).permit(:title, :heading, :body, :category_id, :image,  tag_ids: []).merge(client_user_id: ClientUser.find_by(user: current_user).id)
+        params.require(:article).permit(:title, :heading, :body, :category_id, :image,  tag_ids: [])
     end
 
     def set_article 

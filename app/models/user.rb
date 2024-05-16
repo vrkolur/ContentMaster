@@ -4,8 +4,11 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable
   belongs_to :role 
   validates :name, presence: true
-  validates :password, format: {with: /.{8,}/, message: " should have minimun 8 characters"}
-  validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, message: "must be of valid format"}, uniqueness: true
+  # validates :password, format: {
+  #   with: /\A(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$%*?&])[A-Za-z\d@$%*?&]{8,}\z/,
+  #   message: "must be a strong password"
+  # }
+  validates :email, presence: true
   has_many :likes, dependent: :destroy
   has_many :comments, dependent: :destroy
 end

@@ -84,4 +84,35 @@ RSpec.describe "Articles", type: :request do
     end
 
   end
+
+  describe '#check_admin' do
+    let(:role) {FactoryBot.create(:role, title: "ClientAdmin")}
+    let(:user) {FactoryBot.create(:user,role_id: role.id)}
+
+    it 'should get the articles page without redirecting' do 
+        client = FactoryBot.create(:client)
+        client1 = FactoryBot.create(:client)
+        client_user = FactoryBot.create(:client_user, client_id: client1.id ,user_id: user.id)
+        sign_in client_user.user
+        get client_articles_path(client_id: client.sub_domain)
+        expect(response).to have_http_status(:success)
+    end
+
+    it 'should redirect to his page' do 
+      client = FactoryBot.create(:client)
+      client1 = FactoryBot.create(:client)
+      client_user = FactoryBot.create(:client_user, client_id: client1.id ,user_id: user.id)
+      sign_in client_user.user
+      get new_article_path(client_id:  client.sub_domain)
+      expect(response).to redirect_to("http://www.example.com/#{client1.sub_domain}/articles")
+    end
+
+    it 'should redirect to home page if client is not active' do 
+      client = FactoryBot.create(:client,is_active: false)
+      sign_in user 
+      get new_article_path(client_id:  client.sub_domain)
+      expect(response).to redirect_to("http://www.example.com/")
+    end
+
+  end
 end

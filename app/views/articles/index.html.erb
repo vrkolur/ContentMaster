@@ -25,6 +25,7 @@
 <% @articles.each do |article| %>
   <%= render article %>
 <% end %>
+<%= will_paginate @articles%>
 
 <style>
 

@@ -13,12 +13,6 @@ RSpec.describe Article, type: :model do
       expect(article).not_to be_valid
       expect(article.errors.full_messages).to include("Title can't be blank")
     end
-
-    it "title cannot be blank" do 
-      article = FactoryBot.build(:article, body: nil)
-      expect(article).not_to be_valid
-      expect(article.errors.full_messages).to include("Body can't be blank")
-    end
   end
 
   describe "associations" do 

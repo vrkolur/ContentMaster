@@ -69,6 +69,7 @@ group :test do
   gem 'rspec-rails'
   gem "webmock", "~> 3.23"
   gem 'factory_bot_rails'
+  gem "simplecov", "~> 0.22.0"
 end
 
 gem "devise", "~> 4.9"
@@ -86,3 +87,6 @@ gem "noticed", "~> 2.2"
 gem "prawn", "~> 2.5"
 
 gem "rails-controller-testing", "~> 1.0"
+
+gem "will_paginate", "~> 4.0"
+
