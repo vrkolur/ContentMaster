@@ -26,8 +26,4 @@ class Article < ApplicationRecord
   def self.ransackable_associations(auth_object = nil)
     ["article_tags", "category", "tags"]
   end
-
-  self.per_page = 5
-
-
 end

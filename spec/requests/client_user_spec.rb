@@ -15,6 +15,7 @@ RSpec.describe "ClientUsers", type: :request do
     
     it 'redirects to a new form to create a new client_user' do 
       client_user1 = FactoryBot.create(:client_user, client_id: client.id, user_id: user.id)
+      sign_in user
       get new_client_user_path(client_id: client.sub_domain)
       expect(response).to have_http_status(:success)
     end

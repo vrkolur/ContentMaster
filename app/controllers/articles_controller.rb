@@ -3,8 +3,8 @@ class ArticlesController < ApplicationController
     before_action :set_client
     before_action :check_active 
     before_action :check_admin, except: [:index, :show, :download]
-    before_action :set_article, only: [:new, :index, :show, :create, :edit, :update, :download]
-    skip_before_action :verify_authenticity_token, only: [ :publish_article]
+    # before_action :set_article, only: [ :index, :show, :create, :edit, :update, :download]
+    before_action :set_article, except: [:new, ]
 
     def new 
         @tags = Tag.all
@@ -37,18 +37,10 @@ class ArticlesController < ApplicationController
     def update 
         @article.update(article_params)
         if @article.save
-            redirect_to articles_path(client_id: @client.sub_domain)
+            redirect_to client_articles_path(client_id: @client.sub_domain)
         else 
             render :edit, status: :unprocessable_entity
         end  
-    end
-
-    def review_article 
-        @articles = @client.articles.where(status: false)
-    end
-
-    def publish_article 
-        @article.update(status: true)
     end
 
     def download
