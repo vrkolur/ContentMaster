@@ -13,8 +13,8 @@ class ClientUsersController < ApplicationController
         @user = User.create(client_user_params)
         if  @user.save
             @client_user = @client.client_users.create(user: @user)
-            redirect_to client_articles_path(client_id: @client.sub_domain)
             flash[:notice]= 'Client User Created'
+            redirect_to client_articles_path(client_id: @client.sub_domain)
         else 
             flash[:alert] = "Error Password does not match or Email Taken"
             render :new, status: :unprocessable_entity 
@@ -30,6 +30,10 @@ class ClientUsersController < ApplicationController
     end
 
     def download 
+        authors_pdf = Services::AuthorsDownloadService.new(client: @client).download
+        unless params[:preview].present?
+            send_data(authors_pdf.render,  filename: "#{@client.name}.pdf", type: "authors/pdf")
+        end
     end
 
     private 

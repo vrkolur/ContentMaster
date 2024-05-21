@@ -34,6 +34,7 @@ Rails.application.routes.draw do
     #Article Preview Controller
     get 'review_articles', to: 'article_previews#preview_articles', as:'review_articles'
     resources :client_users, only: [:new, :create, :index, :destroy]
+    get 'download_authors', to: 'client_users#download', as: 'list_authors'
     resources :article_assignments, only: [:new, :create]
     # Message Controller 
     resources :messages do 
