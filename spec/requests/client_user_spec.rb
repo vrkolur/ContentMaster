@@ -49,6 +49,7 @@ RSpec.describe "ClientUsers", type: :request do
         end
         
         it 'creates a new ClientUser as a Author and redirects' do
+          client_user1 = FactoryBot.create(:client_user, client_id: client.id, user_id: user.id)
           post client_users_path(client_id: client.sub_domain), params: {client_user: client_user_params }
           expect(response).to have_http_status(302)
           expect(User.find_by(email: "client_user@email.com").name).to eq("HelloAuthor")
@@ -64,6 +65,7 @@ RSpec.describe "ClientUsers", type: :request do
           end
           
     it 'should create a ClientUser as a Client_admin and redirects' do 
+      client_user1 = FactoryBot.create(:client_user, client_id: client.id, user_id: user.id)
       post client_users_path(client_id: client.sub_domain), params: {client_user: client_user_params1 }
       expect(response).to have_http_status(302)
       expect(User.find_by(email: "client_user_12@email.com").name).to eq("HelloClientAdmin")
@@ -89,6 +91,13 @@ RSpec.describe "ClientUsers", type: :request do
       delete client_user_path(client_id: client.slug,id: client_user.id), params: {id: client_user.id}
       expect(response).to have_http_status(:success)
       expect { ClientUser.find(user.id) }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    it 'should download the list of all the articles' do 
+      client_user1 = FactoryBot.create(:client_user, client_id: client.id, user_id: user.id)
+      get list_authors_path(client_id: client.sub_domain)
+      expect(response).to have_http_status(:success)
+      expect(response.request.url).to eq("http://www.example.com/#{client.sub_domain}/download_authors")
     end
   end
 end

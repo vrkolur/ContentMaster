@@ -10,7 +10,7 @@ RSpec.describe "ArticleAssignments", type: :request do
         it 'get the assignment page with success redirect' do 
             client = FactoryBot.create(:client)
             client_user = FactoryBot.create(:client_user, user_id: user.id,client_id: client.id)
-            sign_in user
+            sign_in client_user.user
             get new_article_assignment_path(client_id: client.sub_domain)
             expect(response).to have_http_status(:success)
             expect(response.request.url).to eq("http://www.example.com/#{client.sub_domain}/article_assignments/new")
@@ -27,10 +27,10 @@ RSpec.describe "ArticleAssignments", type: :request do
         end
 
         it 'should not process and throw error rendering :new ' do 
-            sign_in user 
             client = FactoryBot.create(:client)
             category = FactoryBot.create(:category)
             client_user = FactoryBot.create(:client_user, user_id: user.id,client_id: client.id)
+            sign_in client_user.user 
             post article_assignments_path(client_id: client.sub_domain), params: { category_id: category.id, author_id: user.id}
             expect(response).to have_http_status(302)
             expect(response.request.url).to eq("http://www.example.com/#{client.sub_domain}/article_assignments")

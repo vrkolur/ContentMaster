@@ -15,5 +15,8 @@ class MessagesController < ApplicationController
     private 
     def set_client
         @client = Client.find_by(sub_domain: params[:client_id])
+        if ClientUser.find_by(user: current_user).client != @client
+            redirect_to client_articles_path(client_id: ClientUser.find_by(user: current_user).client.sub_domain)
+        end
     end
 end

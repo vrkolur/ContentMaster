@@ -1,7 +1,7 @@
 class ClientUsersController < ApplicationController
     before_action :authenticate_user!
-    before_action :check_admin?
     before_action :set_client
+    before_action :check_admin?
     before_action :set_client_user
     skip_before_action :verify_authenticity_token, only: [:destroy]
 
@@ -43,8 +43,8 @@ class ClientUsersController < ApplicationController
     end
 
     def check_admin? 
-        unless current_user.role.title=='Admin' || current_user.role.title=='ClientAdmin'
-            redirect_to root_path
+        unless( current_user.role.title=='Admin' || current_user.role.title=='ClientAdmin' ) && ClientUser.find_by(user: current_user).client == @client
+            redirect_to client_articles_path(client_id: ClientUser.find_by(user: current_user).client.sub_domain)
         end
     end
 
