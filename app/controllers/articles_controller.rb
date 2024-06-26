@@ -12,7 +12,7 @@ class ArticlesController < ApplicationController
     end
 
     def index 
-        @q = @client.articles.where(status: true).ransack(params[:q])
+        @q = @client.articles.includes([:image_attachment,:tags,:rich_text_body,:client_user,:category]).where(status: true).ransack(params[:q])
         @articles = @q.result(distinct: true).paginate(:page => params[:page], :per_page => 5)
     end
 

@@ -6,7 +6,7 @@ class ClientUsersController < ApplicationController
     skip_before_action :verify_authenticity_token, only: [:destroy]
 
     def new 
-        @client_user = ClientUser.new 
+        @client_user = ClientUser.includes([:user]).new 
     end
     
     def create

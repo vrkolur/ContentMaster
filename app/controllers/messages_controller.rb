@@ -8,11 +8,11 @@ class MessagesController < ApplicationController
         @messages = Message.where(reciever_id: current_user.id, status: false)
     end
 
-    def mark_as_read 
+    def mark_as_read
         @message = Message.find(params[:id]).update(status: true)
     end
 
-    private 
+    private
     def set_client
         @client = Client.find_by(sub_domain: params[:client_id])
         if ClientUser.find_by(user: current_user).client != @client
@@ -20,3 +20,4 @@ class MessagesController < ApplicationController
         end
     end
 end
+

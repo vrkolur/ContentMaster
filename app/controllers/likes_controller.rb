@@ -1,14 +1,16 @@
-class LikesController < ApplicationController 
+class LikesController < ApplicationController
     skip_before_action :verify_authenticity_token
     before_action :set_article
 
-    def like 
+    def like
         @like = Services::LikesService.new(user: current_user,article: @article).like
     end
 
-    def dislike 
+    def dislike
         @like = Services::LikesService.new(user: current_user,article: @article).dislike
     end
+
+    private
 
     def set_article
         @article = Article.find_by(id: params[:id])
